@@ -16,7 +16,10 @@ feature 'Admin panel' do
     end
 
     it "can delete a post by clicking the delete link next to a post" do
-      click_on "Delete"
+      expect {
+        click_on "Delete"
+      }.to change(Post, :count).by(-1)
+
       expect(page).not_to have_content("Nattay")
     end
 

@@ -43,10 +43,12 @@ describe Admin::PostsController do
     end
 
     context "#destroy" do
-      let(:post) { Post.create(title: "salar", content:"haha") }
+      let!(:post) { Post.create(title: "salar", content:"haha") }
 
       it "should destroy post" do
-        delete :destroy, id: post.id
+        expect {
+          delete :destroy, id: post.id
+        }.to change(Post, :count).by(-1)
         expect(Post.all).not_to include(post)
       end
     end

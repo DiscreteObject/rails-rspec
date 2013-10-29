@@ -6,4 +6,15 @@ class PostsController < ApplicationController
   def show
     @post = Post.find(params[:id])
   end
+
+  def create
+    @post = Post.new(params[:post])
+
+    if @post.save
+      flash[:notice] = "Post was successfully saved."
+      redirect_to admin_post_url(@post)
+    else
+      render :new
+    end
+  end
 end

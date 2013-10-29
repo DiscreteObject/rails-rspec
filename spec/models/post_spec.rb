@@ -9,7 +9,7 @@ describe Post do
     pending
   end
 
-  # a slug is an automaticaly generated url-friendly
+  # a slug is an automatically generated url-friendly
   # version of the title
   it "slug should be automatically generated" do
     post = Post.new

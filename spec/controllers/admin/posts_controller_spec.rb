@@ -25,21 +25,30 @@ describe Admin::PostsController do
       end
     end
 
-    context "#edit" do
+    context "#update" do
       let(:post) { Post.create(title: "salar", content:"haha") }
 
+      it "#edit" do
+        get :edit, id: post.id
+        response.status.should eq 200
+      end
       it "updates a post with valid params" do
-        # put :update, {id: post.id}
+        put :update, id: post.id, :post => { content: 'really sux' }
+        expect(Post.find(post.id).content).to eq('really sux')
       end
       it "doesn't update a post when params are invalid" do
-        # put :update, id: 1
-        # post = Post.create
-        pending
+        put :update, id: post.id, :post => { content: '' }
+        response.should render_template("edit")
       end
     end
 
-    it "#destroy" do
-      pending
+    context "#destroy" do
+      let(:post) { Post.create(title: "salar", content:"haha") }
+
+      it "should destroy post" do
+        delete :destroy, id: post.id
+        expect(Post.all).not_to include(post)
+      end
     end
   end
 end

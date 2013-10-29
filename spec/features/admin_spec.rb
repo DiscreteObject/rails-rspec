@@ -1,12 +1,24 @@
 require 'spec_helper'
 
 feature 'Admin panel' do
+  background do
+    @post = Post.create(title:"nattay", content:"rocks", is_published: true)
+    visit '/admin/posts'
+  end
   context "on admin homepage" do
-    it "can see a list of recent posts"
+    it "can see a list of recent posts" do
+      expect(page).to have_content("Nattay")
+    end
 
-    it "can edit a post by clicking the edit link next to a post"
+    it "can edit a post by clicking the edit link next to a post" do
+      click_on "Edit"
+      expect(page).to have_content("Edit Nattay")
+    end
 
-    it "can delete a post by clicking the delete link next to a post"
+    it "can delete a post by clicking the delete link next to a post" do
+      click_on "Delete"
+      expect(page).not_to have_content("Nattay")
+    end
 
     it "can create a new post and view it" do
        visit new_admin_post_url
@@ -25,17 +37,31 @@ feature 'Admin panel' do
 
   context "editing post" do
     it "can mark an existing post as unpublished" do
-      pending # remove this line when you're working on implementing this test
+      click_on "Edit"
+      uncheck "post_is_published"
+      click_on "Save"
 
       page.should have_content "Published: false"
     end
   end
 
   context "on post show page" do
-    it "can visit a post show page by clicking the title"
+    background do
+      click_on "Nattay"
+    end
 
-    it "can see an edit link that takes you to the edit post path"
+    it "can visit a post show page by clicking the title" do
+      page.should have_content "Nattay"
+      page.should have_content "rocks"
+    end
 
-    it "can go to the admin homepage by clicking the Admin welcome page link"
+    it "can see an edit link that takes you to the edit post path" do
+      expect(page).to have_content "Edit post"
+    end
+
+    it "can go to the admin homepage by clicking the Admin welcome page link" do
+      click_on "Admin welcome page"
+      expect(page).to have_content "Welcome to the admin panel!"
+    end
   end
 end
